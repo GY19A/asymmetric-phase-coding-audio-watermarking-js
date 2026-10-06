@@ -1265,15 +1265,18 @@ h2 {
   height: 220px;
 }
 .hexkey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.55em;
+  min-width: 0;
+  max-width: 100%;
   font: 500 clamp(0.86rem, 1.5vw, 1.02rem) / 1.7 var(--mono);
   color: var(--darker-blue);
-  word-break: break-all;
   letter-spacing: 0.02em;
   margin: 0.2rem 0 0.8rem;
 }
 .hexkey span {
-  margin-right: 0.55em;
-  white-space: nowrap;
+  flex: none;
 }
 .keyrow {
   display: flex;
