@@ -1,0 +1,46 @@
+{
+  "name": "apcaw-js",
+  "version": "1.0.0",
+  "description": "Asymmetric Phase Coding Audio Watermarking (format apcaw-v1): JavaScript library for Node and browsers that carries an Ed25519 signature in the STFT phase and magnitude of audio and verifies it with the public key alone, plus a one-click browser demonstration.",
+  "type": "module",
+  "main": "./src/lib/index.js",
+  "exports": {
+    ".": "./src/lib/index.js"
+  },
+  "files": [
+    "src/lib",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test --test-concurrency=4 'tests/*.test.js'",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "smoke": "node scripts/smoke.mjs",
+    "sweep": "node scripts/sweep.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@noble/ed25519": "3.2.0",
+    "@noble/hashes": "2.4.0"
+  },
+  "devDependencies": {
+    "d3": "7.9.0",
+    "vite": "8.3.1"
+  },
+  "license": "BSD-2-Clause",
+  "homepage": "https://gy19a.github.io/asymmetric-phase-coding-audio-watermarking-js/",
+  "repository": { "type": "git", "url": "git+https://github.com/GY19A/asymmetric-phase-coding-audio-watermarking-js.git" },
+  "author": "Guang Yang <guangyang19@ucla.edu>",
+  "keywords": [
+    "audio watermarking",
+    "ed25519",
+    "public key",
+    "phase coding",
+    "provenance",
+    "browser"
+  ]
+}

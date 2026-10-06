@@ -1,0 +1,10 @@
+{
+ "n": 2048,
+ "frames": 4,
+ "files": {
+  "input": "fft_in.f64",
+  "rfft": "fft_out.f64 (re, im interleaved)",
+  "angle": "fft_angle.f64",
+  "irfft": "fft_irfft.f64 = irfft(rfft(x) * exp(0.5j))"
+ }
+}
