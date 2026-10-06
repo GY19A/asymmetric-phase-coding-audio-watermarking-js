@@ -1739,6 +1739,14 @@ table.ber td.bad {
   .settings-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+  /* Stacked: nothing to stretch to, so the plots take a fixed height (WebKit collapses flex-basis 0). */
+  .side-fill > .fig,
+  .side-fill > .fig > .plot {
+    flex: none;
+  }
+  .side-fill > .fig > .plot {
+    height: 140px;
+  }
   .set-clip {
     grid-row: auto;
   }
