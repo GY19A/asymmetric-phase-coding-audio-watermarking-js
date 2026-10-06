@@ -1110,6 +1110,15 @@ h2 {
 .spec-grid .fig + .fig {
   margin-top: 0;
 }
+/* Same title height in all three panels, so the plots line up with the toggle in the third. */
+.spec-grid .fig-title {
+  min-height: 1.9rem;
+  flex-wrap: nowrap;
+}
+.legend .cb-strip {
+  display: block;
+  overflow: visible;
+}
 .fig-cap {
   margin: 0.4rem 0 0;
   font-size: 0.8rem;

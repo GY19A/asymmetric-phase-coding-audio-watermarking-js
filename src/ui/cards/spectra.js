@@ -106,31 +106,38 @@ export function renderSpectra(body, run) {
   let third = 'residual';
   const draws = [];
   const hovers = [];
+  const scaleSvg = h('svg:svg', { class: 'cb-strip', width: 112, height: 22 });
+  const scaleText = h('span');
+  const setScale = () => {
+    const svg = select(scaleSvg);
+    svg.selectAll('*').remove();
+    if (third === 'residual') {
+      colorbar(svg, 1, 2, 110, LEVEL, lo, top, (v) => `${v} dB`);
+      scaleText.textContent = 'level, same scale in all three panels';
+    } else {
+      colorbar(svg, 1, 2, 110, DIVERGING, -5, 5, (v) => `${v > 0 ? '+' : ''}${v} dB`);
+      scaleText.textContent = 'difference: level change, signed minus original';
+    }
+  };
   const toggle = segmented([['residual', 'Residual'], ['change', 'Level change']], 'residual', (v) => {
     third = v;
     if (v === 'change' && !changeImg) changeImg = image(before, DIVERGING, (_, i) => 0.5 + Math.max(-1, Math.min(1, change[i] / 5)) / 2);
     draws[2]?.();
+    setScale();
   }, 'Difference panel');
-  const cap = h('p', { class: 'fig-cap' });
-  const setCap = () => {
-    cap.textContent = third === 'residual'
-      ? 'Residual: signed minus original, same color scale.'
-      : 'Level change in dB, -5 (gold) to +5 (blue).';
-  };
-  setCap();
+  setScale();
 
   const grid = h('div', { class: 'spec-grid' });
   for (const [pi, pnl] of panels.entries()) {
     const f = fig(pnl.title, { extra: pi === 2 ? toggle.el : null });
     grid.append(f.el);
-    if (pi === 2) f.el.append(cap);
     const canvas = h('canvas');
     const svgEl = h('svg:svg', { class: 'layer' });
     f.plot.append(canvas, svgEl);
     f.plot.setAttribute('role', 'img');
     f.plot.setAttribute('aria-label', `${pnl.title} spectrogram, 0 to 11 kHz`);
     onWidth(f.plot, (W) => {
-      const m = { l: 40, r: 26, t: 4, b: 34 };
+      const m = { l: 40, r: 26, t: 4, b: 24 };
       const Hh = Math.round(Math.min(300, Math.max(190, W * 0.62)));
       f.plot.style.height = `${Hh}px`;
       const ctx = sizeCanvas(canvas, W, Hh);
@@ -154,13 +161,6 @@ export function renderSpectra(body, run) {
           ctx.lineTo(xx, y(0));
         }
         ctx.stroke();
-        if (pi === 2) {
-          svg.selectAll('.cb').remove();
-          const cb = svg.append('g').attr('class', 'cb');
-          if (third === 'residual') colorbar(cb, W - m.r - 110, Hh - 12, 110, LEVEL, lo, top, (v) => `${v} dB`);
-          else colorbar(cb, W - m.r - 110, Hh - 12, 110, DIVERGING, -5, 5, (v) => `${v > 0 ? '+' : ''}${v} dB`);
-          setCap();
-        }
       };
       draws[pi] = draw;
       draw();
@@ -239,6 +239,7 @@ export function renderSpectra(body, run) {
       h('li', {}, h('span', { class: 'sw', style: { background: C.blue } }), `phase band, ${binKHz(band.p_lo)} to ${binKHz(band.p_hi)} kHz`),
       h('li', {}, h('span', { class: 'sw', style: { background: C.darkestGold } }), `magnitude band, ${binKHz(band.m_lo)} to ${binKHz(band.m_hi)} kHz`),
       h('li', {}, h('span', { class: 'sw ring', style: { color: C.text } }), 'hover: the 8-frame group and the bits under the pointer'),
+      h('li', { class: 'legend-scale' }, scaleSvg, scaleText),
     ),
   );
   body.append(
